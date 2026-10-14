@@ -1,0 +1,188 @@
+{
+ "ssc": {
+  "name": "SSC CGL",
+  "pos": 2,
+  "neg": 0.5,
+  "real": "Real exam: 100 questions, 60 min (4 sections of 25 questions, 15 min each)",
+  "sections": [
+   {
+    "name": "Reasoning",
+    "count": 5,
+    "mins": 3,
+    "subjects": {
+     "Reasoning": 1
+    }
+   },
+   {
+    "name": "General Awareness",
+    "count": 5,
+    "mins": 3,
+    "subjects": {
+     "History": 22,
+     "Science": 20,
+     "Polity": 18,
+     "Geography": 15,
+     "Economy": 12
+    }
+   },
+   {
+    "name": "Quantitative Aptitude",
+    "count": 5,
+    "mins": 3,
+    "subjects": {
+     "Quantitative Aptitude": 1
+    }
+   },
+   {
+    "name": "English",
+    "count": 5,
+    "mins": 3,
+    "subjects": {
+     "English": 1
+    }
+   }
+  ],
+  "scope": {
+   "History": {
+    "india": 80,
+    "world": 20
+   },
+   "Geography": {
+    "india": 70,
+    "world": 30
+   },
+   "Polity": {
+    "india": 100
+   },
+   "Economy": {
+    "india": 100
+   },
+   "Science": {
+    "general": 100
+   }
+  }
+ },
+ "ibps": {
+  "name": "IBPS PO (Prelims)",
+  "pos": 1,
+  "neg": 0.25,
+  "real": "Real exam: 100 questions, 60 min (English 30, Quant 35, Reasoning 35; 20 min each)",
+  "sections": [
+   {
+    "name": "English",
+    "count": 6,
+    "mins": 4,
+    "subjects": {
+     "English": 1
+    }
+   },
+   {
+    "name": "Quantitative Aptitude",
+    "count": 7,
+    "mins": 4,
+    "subjects": {
+     "Quantitative Aptitude": 1
+    }
+   },
+   {
+    "name": "Reasoning",
+    "count": 7,
+    "mins": 4,
+    "subjects": {
+     "Reasoning": 1
+    }
+   }
+  ]
+ },
+ "tgpsc": {
+  "name": "TGPSC Group 1 (Prelims)",
+  "pos": 1,
+  "neg": 0,
+  "mins": 30,
+  "real": "Real exam: 150 questions, 150 min, single paper (General Studies and Mental Ability), no negative marking",
+  "sections": [
+   {
+    "name": "General Studies & Mental Ability",
+    "count": 30,
+    "subjects": {
+     "History": 14,
+     "Polity": 14,
+     "Geography": 12,
+     "Economy": 14,
+     "Science": 12,
+     "Reasoning": 12
+    }
+   }
+  ],
+  "scope": {
+   "History": {
+    "telangana": 50,
+    "india": 40,
+    "world": 10
+   },
+   "Geography": {
+    "telangana": 40,
+    "india": 40,
+    "world": 20
+   },
+   "Polity": {
+    "telangana": 25,
+    "india": 75
+   },
+   "Economy": {
+    "telangana": 40,
+    "india": 60
+   },
+   "Science": {
+    "general": 100
+   }
+  }
+ },
+ "upsc": {
+  "name": "UPSC Prelims (GS Paper I)",
+  "pos": 2,
+  "neg": 0.66,
+  "mins": 24,
+  "real": "Real exam: 100 questions, 120 min, single paper, one-third negative marking",
+  "sections": [
+   {
+    "name": "General Studies Paper I",
+    "count": 20,
+    "subjects": {
+     "Polity": 18,
+     "History": 20,
+     "Geography": 15,
+     "Economy": 17,
+     "Environment": 15,
+     "Science": 10
+    }
+   }
+  ],
+  "scope": {
+   "History": {
+    "telangana": 3,
+    "india": 82,
+    "world": 15
+   },
+   "Geography": {
+    "telangana": 3,
+    "india": 52,
+    "world": 45
+   },
+   "Polity": {
+    "telangana": 2,
+    "india": 98
+   },
+   "Economy": {
+    "telangana": 3,
+    "india": 97
+   },
+   "Environment": {
+    "india": 100
+   },
+   "Science": {
+    "general": 100
+   }
+  }
+ }
+}

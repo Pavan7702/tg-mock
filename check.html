@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Question bank checker</title>
+<style>
+body{
+  font:16px/1.5 system-ui,sans-serif;
+  max-width:860px;margin:24px auto;
+  padding:0 16px;color:#1a2238;
+  background:#fff
+}
+@media(prefers-color-scheme:dark){
+  body{
+    background:#12162a;
+    color:#eceff8
+  }
+}
+table{
+  border-collapse:collapse;
+  width:100%;
+  margin:12px 0
+}
+th,td{
+  border-bottom:
+  1px solid #8884;
+  padding:6px 8px;
+  text-align:left
+}
+.bad{
+  color:#c92a2a;
+  font-weight:600
+}
+.ok{
+  color:#2b8a3e;
+  font-weight:600
+}
+</style>
+</head>
+<body>
+<h1>Question bank checker</h1>
+<p>Open this page with Live Server (or on your published site). It checks <code>questions.json</code> against <code>blueprints.json</code>. It cannot tell whether an answer is correct, so still review the answers yourself.</p>
+<div id="out">Loading…</div>
+<script>
+const norm=t=>String(t).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+(async()=>{
+const out=document.getElementById('out');
+try{
+const [Q,B]=await Promise.all([fetch('questions.json').then(r=>r.json()),fetch('blueprints.json').then(r=>r.json())]);
+const errs=[],ids=new Set(),texts=new Map(),subs=new Set();
+Object.values(B).forEach(b=>b.sections.forEach(s=>Object.keys(s.subjects).forEach(k=>subs.add(k))));
+const scopes=['general','india','world','telangana'];
+Q.forEach((q,n)=>{const w=`#${n+1} (${q.id||'no id'})`;
+  if(!q.id)errs.push(w+': missing id');else if(ids.has(q.id))errs.push(w+': duplicate id');ids.add(q.id);
+  if(!subs.has(q.subject))errs.push(w+': subject "'+q.subject+'" is not used by any blueprint');
+  if(!scopes.includes(q.scope))errs.push(w+': scope must be one of '+scopes.join(', '));
+  if(!q.topic)errs.push(w+': missing topic');
+  if(!q.q||q.q.length<8)errs.push(w+': question text missing or too short');
+  if(!Array.isArray(q.o)||q.o.length!=4)errs.push(w+': needs exactly 4 options');
+  else if(new Set(q.o.map(norm)).size<4)errs.push(w+': two options are the same');
+  if(!Number.isInteger(q.a)||q.a<0||q.a>3)errs.push(w+': "a" must be 0, 1, 2 or 3');
+  if(!q.x)errs.push(w+': missing explanation');
+  const z=norm(q.q);if(texts.has(z))errs.push(w+': same question text as '+texts.get(z));else texts.set(z,q.id);
+});
+let h=errs.length?`<p class="bad">${errs.length} problem(s) found:</p><ul>${errs.map(e=>`<li>${e}</li>`).join('')}</ul>`:'<p class="ok">No format problems found.</p>';
+h+=`<h2>${Q.length} questions</h2><table><tr><th>Subject</th><th>general</th><th>india</th><th>world</th><th>telangana</th><th>Total</th></tr>`;
+[...new Set(Q.map(q=>q.subject))].sort().forEach(s=>{const r=Q.filter(q=>q.subject==s);h+=`<tr><td>${s}</td>${scopes.map(c=>`<td>${r.filter(q=>q.scope==c).length}</td>`).join('')}<td>${r.length}</td></tr>`});
+h+='</table><h2>Is there enough for 20 papers?</h2><table><tr><th>Exam / section</th><th>Questions available</th><th>Needed for 20 papers</th><th></th></tr>';
+Object.values(B).forEach(b=>b.sections.forEach(s=>{const av=Q.filter(q=>s.subjects[q.subject]!=null).length,need=s.count*20;
+  h+=`<tr><td>${b.name}: ${s.name}</td><td>${av}</td><td>${need}</td><td class="${av>=need?'ok':'bad'}">${av>=need?'Enough':'Add '+(need-av)+' more'}</td></tr>`}));
+out.innerHTML=h+'</table>';
+}catch(e){out.innerHTML='<p class="bad">Could not load the files. Open this page through Live Server, not by double-clicking it.</p>'}
+})();
+</script>
+</body>
+</html>

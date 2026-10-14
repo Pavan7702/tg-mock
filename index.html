@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mock Test Hall</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef0f6;--surf:#fff;--ink:#1a2238;--mut:#5d667f;--line:#d5d9e6;--acc:#d9480f;--accb:#fff;--ok:#2b8a3e;--bad:#c92a2a;--mark:#7048e8;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12162a;--surf:#1b2140;--ink:#eceff8;--mut:#9aa3c0;--line:#2e3558;--acc:#ff8a4c;--accb:#1a1205;--ok:#69db7c;--bad:#ff8787;--mark:#b197fc}}
+:root[data-theme="dark"]{--bg:#12162a;--surf:#1b2140;--ink:#eceff8;--mut:#9aa3c0;--line:#2e3558;--acc:#ff8a4c;--accb:#1a1205;--ok:#69db7c;--bad:#ff8787;--mark:#b197fc}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 'Bricolage Grotesque',system-ui,-apple-system,Segoe UI,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:20px 16px 48px}
+h1{font-weight:800;font-size:clamp(28px,6vw,44px);line-height:1.05;margin:8px 0 6px;letter-spacing:-.02em}
+h2{font-size:20px;margin:0 0 8px}
+p.sub{color:var(--mut);margin:0 0 24px;max-width:56ch}
+button{font:inherit;cursor:pointer;color:inherit}
+button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.btn{background:var(--acc);color:var(--accb);border:0;border-radius:8px;padding:10px 18px;font-weight:600}
+.ghost{background:transparent;border:1.5px solid var(--line);border-radius:8px;padding:9px 16px}
+.row{display:flex;align-items:center;gap:16px;padding:16px 0;border-top:1.5px solid var(--line);flex-wrap:wrap}
+.row:last-child{border-bottom:1.5px solid var(--line)}
+.row .t{flex:1 1 240px}.row b{font-size:18px}.row small{display:block;color:var(--mut)}
+.best{color:var(--ok);font-weight:600;font-size:14px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:10px 0;z-index:2;border-bottom:1.5px solid var(--line)}
+.timer{font-variant-numeric:tabular-nums;font-weight:800;font-size:22px}
+.timer.low{color:var(--bad)}
+.grid{display:grid;grid-template-columns:1fr 240px;gap:24px;margin-top:20px}
+@media(max-width:720px){.grid{grid-template-columns:1fr}}
+.sec{color:var(--mut);font-size:14px;margin-bottom:4px}
+.q{white-space:pre-line;font-size:20px;font-weight:600;margin:0 0 18px;line-height:1.35}
+.opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--surf);border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px}
+.opt .b{flex:none;width:30px;height:30px;border-radius:50%;border:2px solid var(--mut);display:grid;place-items:center;font-size:13px;font-weight:600;color:var(--mut)}
+.opt.sel{border-color:var(--acc)}.opt.sel .b{background:var(--acc);border-color:var(--acc);color:var(--accb)}
+.opt.ok{border-color:var(--ok)}.opt.ok .b{background:var(--ok);border-color:var(--ok);color:var(--accb)}
+.opt.no{border-color:var(--bad)}.opt.no .b{background:var(--bad);border-color:var(--bad);color:var(--accb)}
+.nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.pal{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.pal button{aspect-ratio:1;border-radius:8px;border:1.5px solid var(--line);background:var(--surf);font-weight:600}
+.pal .a{background:var(--ok);border-color:var(--ok);color:var(--accb)}
+.pal .m{background:var(--mark);border-color:var(--mark);color:#fff}
+.pal .s{background:var(--bad);border-color:var(--bad);color:var(--accb);opacity:.85}
+.pal .c{outline:3px solid var(--acc);outline-offset:1px}
+.key{font-size:13px;color:var(--mut);margin-top:14px;line-height:1.9}
+.key i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.score{font-size:clamp(56px,14vw,96px);font-weight:800;line-height:1;letter-spacing:-.03em}
+table{width:100%;border-collapse:collapse;margin:18px 0}
+th,td{text-align:left;padding:9px 8px;border-bottom:1.5px solid var(--line)}
+th{color:var(--mut);font-weight:600;font-size:14px}
+.rev{border-top:1.5px solid var(--line);padding:18px 0}
+.ex{background:var(--surf);border-left:4px solid var(--acc);padding:10px 14px;border-radius:0 8px 8px 0;margin-top:8px;color:var(--mut)}
+.tag{font-size:13px;font-weight:600}
+@media(prefers-reduced-motion:no-preference){.opt{transition:border-color .15s}}
+.ldw{text-align:center;padding:48px 0}
+.lf,.lw,.pen{animation-duration:4.8s;animation-iteration-count:infinite;animation-timing-function:ease-in-out}
+.lf{opacity:0}.lw{stroke-dasharray:90;stroke-dashoffset:90}.pen{animation-name:pen;transform:translate(45px,40px)}
+@media(prefers-reduced-motion:reduce){.lf,.lw,.pen{animation:none}.lf{opacity:1}.lw{stroke-dashoffset:0}}
+.bdg{display:inline-block;margin-left:8px;border:1.5px solid var(--mark);color:var(--mark);border-radius:6px;padding:0 8px;font-size:12px;font-weight:600}
+.tabs{display:flex;gap:6px;overflow-x:auto;border-bottom:1.5px solid var(--line);margin:12px 0 0}
+.tabs button{background:none;border:0;border-bottom:3px solid transparent;padding:10px 14px;font-weight:600;color:var(--mut);white-space:nowrap}
+.tabs button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--acc)}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+const $=document.getElementById('app'),L="ABCD";
+let S=null,T=null,EX=[],BANK=[];
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+const put=(k,v)=>store.set(k,v),bdg=()=>'';
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const count=e=>e.pk.reduce((a,b)=>a+b,0);
+const blank=()=>({n:0,cnt:{},seen:{},wrong:{},bad:{}});
+const getSt=id=>{try{return Object.assign(blank(),JSON.parse(store.get('tgm:'+id)||'{}'))}catch(e){return blank()}};
+const saveSt=(id,st)=>store.set('tgm:'+id,JSON.stringify(st));
+const wpick=o=>{const t=Object.entries(o).filter(([,w])=>w>0),s=t.reduce((a,b)=>a+b[1],0);let r=Math.random()*s;for(const [k,w] of t){r-=w;if(r<=0)return k}return t.length?t[0][0]:null};
+const least=(arr,st)=>{const m=Math.min(...arr.map(q=>st.cnt[q.id]||0));return shuf(arr.filter(q=>(st.cnt[q.id]||0)==m))[0]};
+async function init(){
+  try{
+    const [b,q]=await Promise.all([fetch('blueprints.json').then(r=>r.json()),fetch('questions.json').then(r=>r.json())]);
+    BANK=q;EX=Object.entries(b).map(([id,x])=>({id,name:x.name,pos:x.pos,neg:x.neg,real:x.real,mins:x.mins,sections:x.sections,scope:x.scope||{},
+      secs:x.sections.map(s=>[s.name,[]]),pk:x.sections.map(s=>s.count),sm:x.sections[0].mins?x.sections.map(s=>s.mins):null}));
+    goHome();
+  }catch(e){$.innerHTML='<h1>Could not load the questions</h1><p class="sub">Open this page through Live Server or your GitHub Pages link, not by double-clicking the file.</p>'}
+}
+function buildPaper(e,st){
+  const used=new Set(),qs=[];
+  e.sections.forEach((sec,si)=>{
+    const n=sec.count,w=n<=10?1:Math.round(n/10),h=n<=10?0:w;
+    const pool=BANK.filter(q=>sec.subjects[q.subject]!=null&&!st.bad[q.id]),free=()=>pool.filter(q=>!used.has(q.id)),sel=[];
+    const take=(q,tag)=>{used.add(q.id);sel.push({...q,rp:tag})};
+    shuf(free().filter(q=>st.wrong[q.id])).slice(0,w).forEach(q=>take(q,'w'));
+    const hs=h+w-sel.length;
+    shuf(free().filter(q=>st.seen[q.id])).sort((a,b)=>(st.cnt[a.id]||0)-(st.cnt[b.id]||0)).slice(0,Math.max(0,hs)).forEach(q=>take(q,'h'));
+    while(sel.length<n){
+      const f=free();if(!f.length)break;
+      const sub=wpick(Object.fromEntries(Object.entries(sec.subjects).filter(([s])=>f.some(q=>q.subject==s))));
+      const fs=f.filter(q=>q.subject==sub),sc=e.scope[sub];let p=fs;
+      if(sc){const k=wpick(Object.fromEntries(Object.entries(sc).filter(([s])=>fs.some(q=>q.scope==s))));if(k)p=fs.filter(q=>q.scope==k)}
+      take(least(p,st),'');
+    }
+    shuf(sel).forEach(q=>{const ix=shuf([0,1,2,3]);qs.push({id:q.id,sec:sec.name,si,q:q.q,o:ix.map(j=>q.o[j]),a:ix.indexOf(q.a),x:q.x||'',t:q.topic||q.subject,ref:'',rp:q.rp})});
+  });
+  return qs;
+}
+function start(id){
+  const e=EX.find(x=>x.id==id),st=getSt(id),qs=buildPaper(e,st),nr=qs.filter(q=>q.rp).length;
+  if(!qs.length){$.innerHTML='<h1>No questions yet</h1><p class="sub">Add questions for this exam to questions.json.</p><button class="btn" onclick="goHome()">Back</button>';return}
+  S={e,st,qs,i:0,si:0,ans:qs.map(()=>-1),sel:qs.map(()=>-1),mk:qs.map(()=>false),vis:qs.map((_,i)=>i==0),tm:qs.map(()=>0),vc:new Set(),left:(e.sm?e.sm[0]:e.mins)*60,cf:null,
+    note:nr?`${nr} question${nr>1?'s':''} repeated from your earlier attempts ${nr>1?'are':'is'} included in this paper.`:''};
+  clearInterval(T);T=setInterval(tickAll,1000);test();window.scrollTo(0,0);
+}
+function visit(i){if(S.vc.has(i))return;S.vc.add(i);const id=S.qs[i].id;S.st.cnt[id]=(S.st.cnt[id]||0)+1;saveSt(S.e.id,S.st)}
+function saveState(){const st=S.st;let cl=0;
+  S.qs.forEach((q,i)=>{const a=S.ans[i];if(a<0)return;st.seen[q.id]=st.n+1;if(a==q.a){if(st.wrong[q.id]){delete st.wrong[q.id];cl++}}else st.wrong[q.id]=1});
+  st.n++;saveSt(S.e.id,st);return{cl,pn:Object.keys(st.wrong).length}}
+function report(i){const q=S.qs[i];S.st.bad[q.id]=1;delete S.st.wrong[q.id];saveSt(S.e.id,S.st);(S.rpt=S.rpt||{})[i]=1;revTab(q.si)}
+const fmt=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+
+function goHome(){
+  clearInterval(T);S=null;
+  $.innerHTML=`<div style="text-align:right"><button class="ghost" onclick="progress()">My progress</button></div><h1>Mock Test Hall</h1><p class="sub">Timed practice papers with negative marking, a question palette and a full answer review. Pick an exam to begin.</p>`+
+  EX.map(e=>{const b=store.get('best:'+e.id);
+    return `<div class="row"><div class="t"><b>${e.name}</b><small>${count(e)} questions · ${e.sm?e.secs.length+' timed sections, '+e.sm.reduce((a,b)=>a+b,0)+' min total':e.mins+' min'} · +${e.pos} / −${e.neg}</small><small>${e.real}</small>${b?`<span class="best">Best score: ${b}</span>`:''}</div><button class="btn" onclick="start('${e.id}')">Start test</button></div>`}).join('')+
+  `<p class="sub" style="margin-top:20px">Each paper is a one-fifth scale version of the real exam, with the same section structure, timing ratio and marking scheme. Where the real exam has timed sections, you can't return to a section once you move on. Your progress and repeat list are saved in this browser only.</p>`;
+}
+function tickAll(){S.left--;if(S.tm)S.tm[S.i]++;if(S.left<=0){if(S.e.sm&&S.si<S.e.secs.length-1)nextSec(true);else submit(true)}else tick()}
+function tick(){const t=document.getElementById('tm');if(t){t.textContent=fmt(S.left);t.className='timer'+(S.left<30?' low':'')}}
+function nextSec(auto){
+  const old=S.e.secs[S.si][0];S.si++;S.left=S.e.sm[S.si]*60;S.cf=null;
+  S.note=auto?`Time ran out for ${old}. You are now in ${S.e.secs[S.si][0]}.`:'';
+  S.i=S.qs.findIndex(q=>q.si==S.si);S.vis[S.i]=true;test();window.scrollTo(0,0);
+}
+function test(){
+  const {qs,i,e}=S,q=qs[i],sec=!!e.sm;visit(i);
+  const ix=qs.map((_,k)=>k).filter(k=>!sec||qs[k].si==S.si),first=ix[0],last=ix[ix.length-1];
+  const lastSec=!sec||S.si==e.secs.length-1,un=ix.filter(k=>S.ans[k]<0).length;
+  const banner=S.cf=='sub'?`<b style="color:var(--ink)">Submit your test now?</b><br>${S.ans.filter(a=>a<0).length} of ${qs.length} questions are unanswered. You can't change answers after submitting.<div class="nav"><button class="btn" onclick="submit(false)">Yes, submit</button><button class="ghost" onclick="cancelC()">Keep working</button></div>`
+   :S.cf=='sec'?`<b style="color:var(--ink)">Move to the next section?</b><br>${un} question(s) unanswered here. You can't come back to ${e.secs[S.si][0]}.<div class="nav"><button class="btn" onclick="nextSec(false)">Yes, move on</button><button class="ghost" onclick="cancelC()">Stay here</button></div>`
+   :S.note?`${S.note}`:'';
+  $.innerHTML=`<div class="top"><div><b>${e.name}${sec?': '+e.secs[S.si][0]:''}</b></div><div class="timer" id="tm">${fmt(S.left)}</div></div>
+  ${banner?`<div class="ex" style="margin-top:16px;border-left-color:var(--${S.cf=='sub'?'bad':'acc'})">${banner}</div>`:''}
+  <div class="grid"><div>
+    <div class="sec">${sec?`Section ${S.si+1} of ${e.secs.length}, `:q.sec+', '}question ${i+1} of ${qs.length}${q.ai?', AI-generated':''}${bdg(q)}</div>
+    <p class="q">${q.q}</p>
+    ${q.o.map((o,k)=>`<button class="opt ${S.sel[i]==k?'sel':''}" onclick="pick(${k})" aria-pressed="${S.sel[i]==k}"><span class="b">${L[k]}</span>${o}</button>`).join('')}
+    ${S.sel[i]>=0&&S.sel[i]!=S.ans[i]?`<div class="sec" style="margin:0 0 8px">Selected but not saved yet. Click ${i==last?'Save answer':'Save &amp; next'} to record it.</div>`:''}
+    <div class="nav">
+      <button class="ghost" onclick="go(${i-1})" ${i==first?'disabled':''}>Previous</button>
+      <button class="ghost" onclick="mark()">${S.mk[i]?'Unmark review':'Mark for review'}</button>
+      <button class="ghost" onclick="clr()">Clear answer</button>
+      ${i==last&&!lastSec?`<button class="btn" onclick="askSec()">Next section</button>`:`<button class="btn" onclick="save(${i==last?-1:i+1})">${i==last?'Save answer':'Save &amp; next'}</button>`}
+    </div></div>
+    <aside><h2>${sec?e.secs[S.si][0]:'Questions'}</h2><div class="pal">${ix.map(k=>`<button class="${S.mk[k]?'m':S.ans[k]>=0?'a':S.vis[k]?'s':''} ${k==i?'c':''}" onclick="go(${k})">${k+1}</button>`).join('')}</div>
+    <div class="key"><i style="background:var(--ok)"></i>Answered<br><i style="background:var(--bad)"></i>Seen, not answered<br><i style="background:var(--mark)"></i>Marked for review<br><i style="border:1.5px solid var(--line)"></i>Not visited</div>
+    <button class="btn" style="width:100%;margin-top:18px" onclick="askSub()">Submit test</button></aside></div>`;
+}
+const pick=k=>{S.sel[S.i]=k;S.note='';test()},clr=()=>{S.sel[S.i]=-1;S.ans[S.i]=-1;test()};
+function save(n){S.ans[S.i]=S.sel[S.i];S.note='';if(n<0)test();else go(n)}
+const keep=()=>{S.ans[S.i]=S.sel[S.i]},mark=()=>{S.mk[S.i]=!S.mk[S.i];test()};
+const askSub=()=>{keep();S.cf='sub';test();window.scrollTo(0,0)},askSec=()=>{keep();S.cf='sec';test();window.scrollTo(0,0)},cancelC=()=>{S.cf=null;test()};
+function go(n){if(n<0||n>=S.qs.length||(S.e.sm&&S.qs[n].si!=S.si))return;S.sel[S.i]=S.ans[S.i];S.i=n;S.vis[n]=true;S.note='';test()}
+function progress(){
+  clearInterval(T);S=null;const hs=JSON.parse(store.get('hist')||'[]');
+  $.innerHTML=`<div class="top"><b>Your progress</b><button class="btn" onclick="goHome()">Back to home</button></div>`+(hs.length?EX.map(e=>{const h=hs.filter(x=>x.id==e.id);if(!h.length)return '';
+    const pc=h.map(x=>Math.round(x.sc/x.max*100)),pts=pc.map((v,i)=>`${h.length>1?i*300/(h.length-1):150},${90-Math.max(0,v)*.9}`).join(' '),secs={};
+    h.forEach(x=>Object.entries(x.s).forEach(([n,[c,t]])=>{const o=secs[n]=secs[n]||[0,0];o[0]+=c;o[1]+=t}));
+    return `<h2 style="margin-top:28px">${e.name}</h2><p class="sub" style="margin:0">${h.length} attempt${h.length>1?'s':''}, latest ${pc[pc.length-1]}%, best ${Math.max(...pc)}%. Score as a percentage of the maximum:</p><svg viewBox="-6 -6 312 102" style="width:100%;max-width:420px;overflow:visible" role="img" aria-label="Score trend"><line x1="0" y1="90" x2="300" y2="90" stroke="var(--line)"/><polyline points="${pts}" fill="none" stroke="var(--acc)" stroke-width="3" stroke-linejoin="round"/></svg><table><tr><th>Section</th><th>Overall accuracy</th></tr>${Object.entries(secs).map(([n,[c,t]])=>`<tr><td>${n}</td><td>${Math.round(c/t*100)}% (${c}/${t})</td></tr>`).join('')}</table>`}).join(''):'<p class="sub" style="margin-top:20px">No attempts yet. Finish a test and your progress will appear here.</p>');
+}
+function revTab(si){
+  const {qs,e}=S,all=qs.map((_,j)=>j);
+  document.getElementById('tabs').innerHTML=e.secs.map(([n],k)=>{const ix=all.filter(j=>qs[j].si==k),c=ix.filter(j=>S.ans[j]==qs[j].a).length;
+    if(!ix.length)return '';return `<button role="tab" aria-selected="${k==si}" onclick="revTab(${k})">${n} (${c}/${ix.length})</button>`}).join('');
+  document.getElementById('rv').innerHTML=all.filter(j=>qs[j].si==si).map((i,n)=>{const q=qs[i],a=S.ans[i],st=a<0?'Skipped':a==q.a?'Correct':'Wrong';
+    return `<div class="rev"><div class="sec">Question ${n+1}, ${S.tm?S.tm[i]:0} s${q.ai?', AI-generated':''}${q.t?', topic: '+q.t:''}, <span class="tag" style="color:var(--${a==q.a?'ok':a<0?'mut':'bad'})">${st}</span>${bdg(q)}</div><p class="q" style="font-size:18px">${q.q}</p>
+    ${q.o.map((o,k)=>`<div class="opt ${k==q.a?'ok':k==a?'no':''}"><span class="b">${L[k]}</span>${o}</div>`).join('')}<div class="ex">${q.x}</div><button class="ghost" style="margin-top:10px" onclick="report(${i})" ${S.rpt&&S.rpt[i]?'disabled':''}>${S.rpt&&S.rpt[i]?'Reported and removed from repeats':'Report wrong question'}</button></div>`}).join('');
+}
+function submit(auto){
+  clearInterval(T);
+  const {qs,e}=S;let c=0,w=0;const sec={};
+  qs.forEach((q,i)=>{const s=sec[q.sec]=sec[q.sec]||{c:0,w:0,u:0};
+    if(S.ans[i]<0){s.u++}else if(S.ans[i]==q.a){c++;s.c++}else{w++;s.w++}});
+  const sc=+(c*e.pos-w*e.neg).toFixed(2),max=qs.length*e.pos,att=c+w;
+  const wr=saveState(),prev=parseFloat(store.get('best:'+e.id));
+  if(isNaN(prev)||sc>prev)put('best:'+e.id,sc);
+  const hs=JSON.parse(store.get('hist')||'[]');hs.push({id:e.id,t:Date.now(),sc,max,s:Object.fromEntries(Object.entries(sec).map(([n,v])=>[n,[v.c,v.c+v.w+v.u]]))});put('hist',JSON.stringify(hs.slice(-100)));
+  const tp={};qs.forEach((q,i)=>{const k=q.t||q.sec,o=tp[k]=tp[k]||[0,0];o[1]++;if(S.ans[i]==q.a)o[0]++});
+  const weak=Object.entries(tp).sort((a,b)=>a[1][0]/a[1][1]-b[1][0]/b[1][1]).slice(0,8);
+  const loc=qs.map((q,i)=>qs.slice(0,i).filter(x=>x.si==q.si).length+1),tm=S.tm,tot=tm.reduce((a,b)=>a+b,0);
+  const slow=qs.map((q,i)=>i).sort((a,b)=>tm[b]-tm[a]).slice(0,3).filter(i=>tm[i]>0);
+  $.innerHTML=`<div class="top"><b>${e.name} results</b><button class="btn" onclick="goHome()">Back to home</button></div><h1>${auto?'Time is up':'Test submitted'}</h1><p class="sub">${e.name}</p>
+  <div class="score">${sc}<span style="font-size:.35em;color:var(--mut)"> / ${max}</span></div>
+  <p class="sub" style="margin-top:12px">${c} correct, ${w} wrong, ${qs.length-att} skipped. Accuracy on attempted questions: ${att?Math.round(c/att*100):0}%.</p><p class="sub">${wr.cl?`${wr.cl} earlier mistake${wr.cl>1?'s':''} answered correctly, so ${wr.cl>1?'they are':'it is'} cleared. `:''}${wr.pn?`${wr.pn} question${wr.pn>1?'s':''} you got wrong ${wr.pn>1?'are':'is'} queued to return in upcoming ${e.name} attempts, a few per paper.`:'No wrong answers are waiting to be repeated.'}</p>
+  <table><tr><th>Section</th><th>Correct</th><th>Wrong</th><th>Skipped</th><th>Marks</th></tr>
+  ${Object.entries(sec).map(([n,s])=>`<tr><td>${n}</td><td>${s.c}</td><td>${s.w}</td><td>${s.u}</td><td>${+(s.c*e.pos-s.w*e.neg).toFixed(2)}</td></tr>`).join('')}</table>
+  <p class="sub">Time spent: about ${Math.round(tot/qs.length)} s per question.${slow.length?` Longest: ${slow.map(i=>`${qs[i].sec} Q${loc[i]} (${tm[i]} s)`).join(', ')}.`:''}</p>
+  <h2 style="margin-top:28px">Topic report</h2><table><tr><th>Topic, weakest first</th><th>Correct</th></tr>${weak.map(([k,[c,t]])=>`<tr><td>${k}</td><td style="color:var(--${c/t<.5?'bad':'ok'});font-weight:600">${c}/${t}</td></tr>`).join('')}</table>
+  <div class="nav"><button class="btn" onclick="start('${e.id}')">Take another test</button><button class="ghost" onclick="goHome()">All exams</button></div>
+  <h2 style="margin-top:36px">Answer review</h2><div class="tabs" role="tablist" id="tabs"></div><div id="rv"></div><div class="nav"><button class="btn" onclick="goHome()">Back to home</button></div>`;
+  revTab(qs[0]?qs[0].si:0);
+  window.scrollTo(0,0);
+}
+init();
+</script>
+</body>
+</html>
